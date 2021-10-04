@@ -1,0 +1,21 @@
+GET http://localhost:3000/subscribers
+###
+GET http://localhost:3000/subscribers/615acf5844798c2b0b0d8676
+###
+POST http://localhost:3000/subscribers
+Content-Type: application/json
+
+{
+    "name": "William",
+    "subscribedToChannel": "Youtube Channel"
+}
+###
+DELETE http://localhost:3000/subscribers/615acf5844798c2b0b0d8676
+###
+PATCH http://localhost:3000/subscribers/615acf5844798c2b0b0d8676
+Content-Type: application/json
+
+{
+    "name": "Chris",
+    "subscribedToChannel": "THENX"
+}
