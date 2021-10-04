@@ -1,16 +1,16 @@
 GET http://localhost:3000/subscribers
 ###
-GET http://localhost:3000/subscribers/615acf5844798c2b0b0d8676
+GET http://localhost:3000/subscribers/615afa0c57d1a9ef6e5c45f9
 ###
 POST http://localhost:3000/subscribers
 Content-Type: application/json
 
 {
-    "name": "William",
-    "subscribedToChannel": "Youtube Channel"
+    "name": "Daniel",
+    "subscribedToChannel": "FitnessFAQs"
 }
 ###
-DELETE http://localhost:3000/subscribers/615acf5844798c2b0b0d8676
+DELETE http://localhost:3000/subscribers/615afae6188cec3991e31d49
 ###
 PATCH http://localhost:3000/subscribers/615acf5844798c2b0b0d8676
 Content-Type: application/json

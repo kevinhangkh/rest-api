@@ -4,14 +4,25 @@ const router = express.Router();
 const Subscriber = require('../models/subscriber');
 
 //GET all
-router.get('/', async (req, res) => {
+// router.get('/', async (req, res) => {
+//     try {
+//         const subscribers = await Subscriber.find();
+//         res.json(subscribers);
+//     } catch (err) {
+//         res.status(500).json({ message: err.message })
+//     }
+// })
+
+router.get('/', (req, res) => {
     try {
-        const subscribers = await Subscriber.find();
-        res.json(subscribers);
+        Subscriber.find((err, subs) => {
+            if (err) return res.status(500).json({ message: err.message });
+            res.json(subs);
+        });
+        
     } catch (err) {
         res.status(500).json({ message: err.message })
     }
-    
 })
 
 //GET one
@@ -19,12 +30,11 @@ router.get('/:id', (req, res) => {
     try {
         Subscriber.findById(req.params.id, (err, sub) => {
             if (err) {
-                res.status(500).json({ message: err.message });
-                return;
+                return res.status(500).json({ message: err.message });
             }
             console.log("sub: " + sub);
             if (sub == null) 
-            return res.status(404).json({ message: `Cannot find subscriber with id ${req.params.id}`});
+                return res.status(404).json({ message: `Cannot find subscriber with id ${req.params.id}`});
             
             res.subscriber = sub;
             res.json(res.subscriber);
@@ -36,20 +46,38 @@ router.get('/:id', (req, res) => {
 })
 
 //POST one
-router.post('/', async (req, res) => {
+router.post('/', (req, res) => {
     
     const sub = new Subscriber({
         name: req.body.name,
         subscribedToChannel: req.body.subscribedToChannel,
     })
     
-    try {
-        const newSub = await sub.save();
+    //Either with callback method
+    // try {
+    //     const newSub = sub.save((err, sub) => {
+    //         if (err) return res.status(500).json({ message: err.message });
+
+    //         res.status(201).json(sub);
+    //     });
+    //     // res.status(201).json(newSub);
+    // } catch (error) {
+    //     res.status(400).json({ message: error.message });
+    // }
+
+    //Or with promise .then().catch()
+    sub.save()
+    .then(newSub => {
         res.status(201).json(newSub);
-    } catch (error) {
-        res.status(400).json({ message: error.message });
-    }
+    })
+    .catch(err => {
+        return res.status(500).json({ message: err.message });
+    });
     
+    //Or even async/await
+    //  async (req, res) => {
+    //  const newSub = await sub.save()
+    //}
 })
 
 //UPDATE (PATCH instead of PUT cause we want to update only one field) one
